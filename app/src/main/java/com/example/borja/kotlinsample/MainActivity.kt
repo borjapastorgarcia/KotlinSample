@@ -6,30 +6,35 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.Toast
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.find
+import org.jetbrains.anko.longToast
+import org.jetbrains.anko.uiThread
 
 class MainActivity : AppCompatActivity() {
-
+    private val items = listOf(
+            "Mon 6/23 - Sunny - 31/17",
+            "Tue 6/24 - Foggy - 21/8",
+            "Wed 6/25 - Cloudy - 22/17",
+            "Thurs 6/26 - Rainy - 18/11",
+            "Fri 6/27 - Foggy - 21/10",
+            "Sat 6/28 - TRAPPED IN WEATHERSTATION - 23/18",
+            "Sun 6/29 - Sunny - 20/7"
+    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val forecastList: RecyclerView = find(R.id.forecast_list)
         forecastList.layoutManager = LinearLayoutManager(this)
         forecastList.adapter = ForecastListAdapter(items)
-        toast("Hello World!")
-    }
 
-    private val items = listOf(
-            "Lunes 6/23",
-            "Mart 6/23",
-            "MIe 6/23",
-            "Jue 6/23",
-            "Vie 6/23",
-            "Sab 6/23",
-            "Dom 6/23"
-    )
 
-    fun Context.toast(message: CharSequence, duration: Int = Toast.LENGTH_SHORT) {
-        Toast.makeText(this, message, duration).show();
+        val url = "http://api.openweathermap.org/data/2.5/forecast/daily?" +
+                "APPID=15646a06818f61f7b8d7823ca833e1ce&q=94043&mode=json&units=metric&cnt=7"
+
+        doAsync {
+            Request(url).run()
+            uiThread { longToast("Request performed") }
+        }
     }
 }
