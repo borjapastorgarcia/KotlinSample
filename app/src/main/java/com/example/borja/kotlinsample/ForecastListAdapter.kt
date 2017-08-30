@@ -10,8 +10,8 @@ import com.example.borja.kotlinsample.ui.utils.ctx
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_forecast.view.*
 
-class ForecastListAdapter(val weekForecast: ForecastList,
-                          val itemClick: (Forecast) -> Unit) : RecyclerView.Adapter<ForecastListAdapter.ViewHolder>() {
+class ForecastListAdapter(val weekForecast: ForecastList, val itemClick: (Forecast) -> Unit) :
+        RecyclerView.Adapter<ForecastListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.ctx).inflate(R.layout.item_forecast, parent, false)
@@ -22,7 +22,7 @@ class ForecastListAdapter(val weekForecast: ForecastList,
         holder.bindForecast(weekForecast[position])
     }
 
-    override fun getItemCount(): Int = weekForecast.dailyForecast.size
+    override fun getItemCount() = weekForecast.size
 
     class ViewHolder(view: View, val itemClick: (Forecast) -> Unit) : RecyclerView.ViewHolder(view) {
 
@@ -37,9 +37,4 @@ class ForecastListAdapter(val weekForecast: ForecastList,
             }
         }
     }
-
-    interface OnItemClickListener {
-        operator fun invoke(forecast: Forecast)
-    }
-
 }
